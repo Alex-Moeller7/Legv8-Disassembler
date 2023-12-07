@@ -5,7 +5,7 @@ public class BinUpdater {
     public static void main(String[] args) {
         // Replace this with your desired binary value
         String binaryValue = "100010110001111111111111010110000110100100011010010001101001000";
-        /* R, I, CB, B, D, IW
+        /* R, I, CB, B, D,
          *
          * EX: ADD (R type)
          * 11 bit opcode - 10001011000
