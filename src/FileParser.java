@@ -39,10 +39,6 @@ public class FileParser {
                             int totalBitsForInstruction = 32; // Total bits for a 4-byte instruction
 
                             if (bitsRead >= totalBitsForInstruction) {
-                                // Extract the remaining bits for the complete instruction
-                                // ... Extract and process the remaining bits based on instruction type
-                                // Reset variables for the next instruction
-
                                 switch(instructionType){
                                 /*
                                 EX: ADD (R type)
@@ -72,6 +68,13 @@ public class FileParser {
                                         RdArr = remainingInts.subList(16,21);
                                         int Rd = binaryToDecimal(combineElements(RdArr));
 
+                                        /**
+                                         * All R type instructions to be handled for printing (30)
+                                         * UMULH, UDIV, SUBS, SUB, SMULH, SDIV, PRNT, PRNL, ORR, MUL
+                                         * LSR, LSL, HALT, FSUBS, FSUBD, FMULS, FMULD, FDIVS, FDIVD, FCMPS, FCMPD,
+                                         * FADDD, FADDS, EOR, DUMP, BR, ANDS, AND, ADDS, ADD
+                                         */
+
                                         System.out.println(Mnem + " X" + Rd + " X" + Rn + " X" + Rm);
                                         break;
 
@@ -94,14 +97,18 @@ public class FileParser {
                                         int Alu = binaryToDecimal(combineElements(AluArr));
 
                                         RnArrI = remainingIntsI.subList(12,17);
-                                        //System.out.println(combineElements(RnArrI));
                                         int RnI = binaryToDecimal(combineElements(RnArrI));
 
                                         RdArrI = remainingIntsI.subList(17,22);
-                                        //System.out.println(combineElements(RdArrI));
                                         int RdI = binaryToDecimal(combineElements(RdArrI));
 
+                                        //Switch case to print based on the instruction
+                                        /**
+                                         * All I type instructions (8)
+                                         * ADDI, ADDIS, ANDI, ANDIS, EORI, ORRI, SUBIS, SUBI
+                                         */
                                         System.out.println(Mnem + " X" + RdI + " X" + RnI  + " #" + Alu);
+
                                         break;
 
                                     /* EX: BL (B type)
@@ -111,12 +118,17 @@ public class FileParser {
                                     case "B":
                                         int OPsizeB = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
                                         List<Integer> remainingIntsB = bitList.subList(OPsizeB, 32);
-                                        System.out.println(remainingIntsB);
+                                        //System.out.println(remainingIntsB);
                                         List<Integer> BR_Arr; //
 
                                         BR_Arr = remainingIntsB;
                                         System.out.println(combineElements(BR_Arr));
                                         int BR_A = binaryToDecimal(combineElements(BR_Arr));
+
+                                        /**
+                                         * All B type instructions for printing (2)
+                                         * B, BL
+                                         */
 
                                         System.out.println("BL " + BR_A);
                                         break;
@@ -152,6 +164,12 @@ public class FileParser {
                                         //System.out.println(combineElements(RdArrI));
                                         int RdD = binaryToDecimal(combineElements(RdArrD));
 
+                                        /**
+                                         * All D type instructions for printing (12)
+                                         * LDUR, LDURB, LDURD, LDURH, LDURS, LDURSW,
+                                         * STUR, STRUB, STRUD, STRUH, STRUS, STURSW
+                                         */
+
                                         System.out.println(Mnem + " X" + RdD + ", [X" + RnD + ", #" + dt + "]");
                                         break;
 
@@ -168,12 +186,17 @@ public class FileParser {
                                         List<Integer> Rt_Arr; //01001
 
                                         COND_Arr = remainingInts_CB.subList(0,19);
-                                        System.out.println(combineElements(COND_Arr));
+                                        //System.out.println(combineElements(COND_Arr));
                                         int Cond = binaryToDecimal(combineElements(COND_Arr));
 
                                         Rt_Arr = remainingInts_CB.subList(19,24);
-                                        System.out.println(combineElements(Rt_Arr));
+                                        //System.out.println(combineElements(Rt_Arr));
                                         int Rt_CB = binaryToDecimal(combineElements(Rt_Arr));
+
+                                        /**
+                                         * All CB instructions for printing variations (3)
+                                         * B., CBNZ, CBZ
+                                         */
 
                                         System.out.println(Mnem + " X" + Rt_CB + ", " + Cond);
                                         break;
@@ -206,6 +229,12 @@ public class FileParser {
         return InstructionSet.findInstruction(bitList);
     }
 
+    /**
+     * Takes elements from an array list and converts them to an integer of the same values.
+     * Ex:  Integer List [1, 0, 1, 1, 0, 1, 0], outputs: 1011010
+     * @param elements - A list of integers in the form of binary 1 or 0's (Ex: [1, 0, 0, 1, 1, 0])
+     * @return result - an integer in the form of binary (Ex: 101001)
+     */
     public static int combineElements(List<Integer> elements) {
         int result = 0;
         int multiplier = 1;
@@ -218,6 +247,15 @@ public class FileParser {
         return result;
     }
 
+    /**
+     * Converts a binary number to a decimal value.
+     * Used to convert an integer in the format 1010100 to a decimal number (register number).
+     * Ex: 0110 outputs: 6
+     * Ex: 101100 outputs: 36
+     *
+     * @param binaryNumber - an integer in the format 101100
+     * @return decimal - a value in decimal
+     */
     public static int binaryToDecimal(int binaryNumber) {
         int decimal = 0;
         int power = 0;

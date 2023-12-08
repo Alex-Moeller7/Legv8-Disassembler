@@ -13,6 +13,7 @@ public class InstructionSet {
             new Instruction("ANDIS", "1111001000", "I"),
             new Instruction("ANDS", "1110101000", "R"),
             new Instruction("B", "000101", "B"),
+            new Instruction("B.", "01010100", "CB"),
             new Instruction("BL", "100101", "B"),
             new Instruction("BR", "11010110000", "R"),
             new Instruction("CBNZ", "10110101", "CB"),
