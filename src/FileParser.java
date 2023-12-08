@@ -53,19 +53,26 @@ public class FileParser {
                                     * 5 bit Rd
                                  */
                                     case "R":
-                                        int size = 32 - 11; // number of bits for remaining fields
-                                        List<Integer> Rm;
-                                        List<Integer> shamt;
-                                        List<Integer> Rn;
-                                        List<Integer> Rd;
+                                        int OPsize = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
+                                        List<Integer> remainingInts = bitList.subList(OPsize, 32);
+                                        List<Integer> RmArr; //11111
+                                        List<Integer> shamtArr; //000000
+                                        List<Integer> RnArr; //00000
+                                        List<Integer> RdArr; //10100
 
-                                        Rm = bitList.subList(0,4);
-                                        shamt = bitList.subList(5,10);
-                                        Rn = bitList.subList(11,15);
-                                        Rd = bitList.subList(16,20);
+                                        RmArr = remainingInts.subList(0,5);
+                                        int Rm = binaryToDecimal(combineElements(RmArr));
 
+                                        shamtArr = remainingInts.subList(5,11);
+                                        int shamt = binaryToDecimal(combineElements(shamtArr));
 
-                                        System.out.println(Mnem + " X" + Rm + " X" + shamt + " X" + Rn + " " + Rd);
+                                        RnArr = remainingInts.subList(11,16);
+                                        int Rn = binaryToDecimal(combineElements(RnArr));
+
+                                        RdArr = remainingInts.subList(16,21);
+                                        int Rd = binaryToDecimal(combineElements(RdArr));
+
+                                        System.out.println(Mnem + " X" + Rd + " X" + Rn + " X" + Rm);
                                         break;
 
                                     /*
@@ -76,7 +83,25 @@ public class FileParser {
                                      * 5 bit Rd
                                      */
                                     case "I":
-                                        bitList.clear();
+                                        int OPsizeI = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
+                                        List<Integer> remainingIntsI = bitList.subList(OPsizeI, 32);
+                                        System.out.println(remainingIntsI);
+                                        List<Integer> AluArr; //000000000001
+                                        List<Integer> RnArrI; //00000
+                                        List<Integer> RdArrI; //01001
+
+                                        AluArr = remainingIntsI.subList(0,12);
+                                        int Alu = binaryToDecimal(combineElements(AluArr));
+
+                                        RnArrI = remainingIntsI.subList(12,17);
+                                        //System.out.println(combineElements(RnArrI));
+                                        int RnI = binaryToDecimal(combineElements(RnArrI));
+
+                                        RdArrI = remainingIntsI.subList(17,22);
+                                        //System.out.println(combineElements(RdArrI));
+                                        int RdI = binaryToDecimal(combineElements(RdArrI));
+
+                                        System.out.println(Mnem + " X" + RdI + " X" + RnI  + " #" + Alu);
                                         break;
 
                                     /* EX: BL (B type)
@@ -84,7 +109,16 @@ public class FileParser {
                                      * 26 bit BR_Address
                                      */
                                     case "B":
-                                        bitList.clear();
+                                        int OPsizeB = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
+                                        List<Integer> remainingIntsB = bitList.subList(OPsizeB, 32);
+                                        System.out.println(remainingIntsB);
+                                        List<Integer> BR_Arr; //
+
+                                        BR_Arr = remainingIntsB;
+                                        System.out.println(combineElements(BR_Arr));
+                                        int BR_A = binaryToDecimal(combineElements(BR_Arr));
+
+                                        System.out.println("BL " + BR_A);
                                         break;
 
                                     /* EX: LDUR (D type)
@@ -95,7 +129,30 @@ public class FileParser {
                                      * 5 bit Rd
                                      */
                                     case "D":
-                                        bitList.clear();
+                                        int OPsizeD = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
+                                        List<Integer> remainingIntsD = bitList.subList(OPsizeD, 32);
+                                        System.out.println(remainingIntsD);
+                                        List<Integer> DTArr; //000001000
+                                        List<Integer> opArr; //00
+                                        List<Integer> RnArrD; //11100
+                                        List<Integer> RdArrD; //10011
+
+                                        DTArr = remainingIntsD.subList(0,9);
+                                        int dt = binaryToDecimal(combineElements(DTArr));
+
+                                        opArr = remainingIntsD.subList(9,11);
+                                        //System.out.println(combineElements(opArr));
+                                        int op = binaryToDecimal(combineElements(opArr));
+
+                                        RnArrD = remainingIntsD.subList(11,16);
+                                        //System.out.println(combineElements(RnArrD));
+                                        int RnD = binaryToDecimal(combineElements(RnArrD));
+
+                                        RdArrD = remainingIntsD.subList(16,21);
+                                        //System.out.println(combineElements(RdArrI));
+                                        int RdD = binaryToDecimal(combineElements(RdArrD));
+
+                                        System.out.println(Mnem + " X" + RdD + ", [X" + RnD + ", #" + dt + "]");
                                         break;
 
                                     /* EX: CBZ (CB type)
@@ -104,7 +161,21 @@ public class FileParser {
                                      * 5 bit Rt
                                      */
                                     case "CB":
-                                        bitList.clear();
+                                        int OPsize_CB = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
+                                        List<Integer> remainingInts_CB = bitList.subList(OPsize_CB, 32);
+                                        System.out.println(remainingInts_CB);
+                                        List<Integer> COND_Arr; //0000000000000000010
+                                        List<Integer> Rt_Arr; //01001
+
+                                        COND_Arr = remainingInts_CB.subList(0,19);
+                                        System.out.println(combineElements(COND_Arr));
+                                        int Cond = binaryToDecimal(combineElements(COND_Arr));
+
+                                        Rt_Arr = remainingInts_CB.subList(19,24);
+                                        System.out.println(combineElements(Rt_Arr));
+                                        int Rt_CB = binaryToDecimal(combineElements(Rt_Arr));
+
+                                        System.out.println(Mnem + " X" + Rt_CB + ", " + Cond);
                                         break;
 
                                     default:
@@ -135,14 +206,29 @@ public class FileParser {
         return InstructionSet.findInstruction(bitList);
     }
 
-    // Method to convert bitList to integer value
-    private static int convertBitListToInt(List<Integer> bitList) {
-        int value = 0;
-        int power = bitList.size() - 1;
-        for (int bit : bitList) {
-            value += bit * Math.pow(2, power);
-            power--;
+    public static int combineElements(List<Integer> elements) {
+        int result = 0;
+        int multiplier = 1;
+
+        for (int i = elements.size() - 1; i >= 0; i--) {
+            result += elements.get(i) * multiplier;
+            multiplier *= 10; // Adjust this multiplier for different bases (e.g., 2 for binary)
         }
-        return value;
+
+        return result;
+    }
+
+    public static int binaryToDecimal(int binaryNumber) {
+        int decimal = 0;
+        int power = 0;
+
+        while (binaryNumber > 0) {
+            int bit = binaryNumber % 10;
+            decimal += bit * Math.pow(2, power);
+            binaryNumber /= 10;
+            power++;
+        }
+
+        return decimal;
     }
 }

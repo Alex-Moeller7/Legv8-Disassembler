@@ -28,6 +28,10 @@ public class Instruction {
         return convertStringToBits(opcode);
     }
 
+    public int getOpcodeSize(){
+        return opcode.length();
+    }
+
     private int[] convertStringToBits(String opcode) {
         int[] bits = new int[opcode.length()];
         for (int i = 0; i < opcode.length(); i++) {

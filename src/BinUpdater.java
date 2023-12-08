@@ -4,7 +4,7 @@ import java.io.IOException;
 public class BinUpdater {
     public static void main(String[] args) {
         // Replace this with your desired binary value
-        String binaryValue = "10001011000111110000000000010100";
+        String binaryValue = "10110101000000000000000001001001";
 
         // Specify the file path
         String filePath = "src/test.bin";
