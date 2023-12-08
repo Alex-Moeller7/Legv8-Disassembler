@@ -181,9 +181,10 @@ public class FileParser {
                                     case "CB":
                                         int OPsize_CB = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
                                         List<Integer> remainingInts_CB = bitList.subList(OPsize_CB, 32);
-                                        System.out.println(remainingInts_CB);
+                                        //System.out.println(remainingInts_CB);
                                         List<Integer> COND_Arr; //0000000000000000010
                                         List<Integer> Rt_Arr; //01001
+                                        String condString = null;
 
                                         COND_Arr = remainingInts_CB.subList(0,19);
                                         //System.out.println(combineElements(COND_Arr));
@@ -197,8 +198,47 @@ public class FileParser {
                                          * All CB instructions for printing variations (3)
                                          * B., CBNZ, CBZ
                                          */
+                                        //if the instruction is a B.cond, determine which cond.
+                                        if(Mnem.equals("B.")){
+                                            switch(Rt_CB){
+                                                case 0:
+                                                    condString = "EQ";
+                                                case 1:
+                                                    condString = "NE";
+                                                case 2:
+                                                    condString = "HS";
+                                                case 3:
+                                                    condString = "LO";
+                                                case 4:
+                                                    condString = "MI";
+                                                case 5:
+                                                    condString = "PL";
+                                                case 6:
+                                                    condString = "VS";
+                                                case 7:
+                                                    condString = "VC";
+                                                case 8:
+                                                    condString = "HI";
+                                                case 9:
+                                                    condString = "LS";
+                                                case 10:
+                                                    condString = "GE";
+                                                case 11:
+                                                    condString = "LT";
+                                                case 12:
+                                                    condString = "GT";
+                                                case 13:
+                                                    condString = "LE";
+                                                default:
+                                            }
+                                            System.out.println(Mnem + condString + " " + Cond);
 
-                                        System.out.println(Mnem + " X" + Rt_CB + ", " + Cond);
+
+                                            //if instruction is not B.cond
+                                        } else {
+                                            System.out.println(Mnem + " X" + Rt_CB + ", " + Cond);
+                                        }
+
                                         break;
 
                                     default:
@@ -227,6 +267,10 @@ public class FileParser {
 
     private static Instruction findMatchingInstruction(List<Integer> bitList) {
         return InstructionSet.findInstruction(bitList);
+    }
+
+    public static String binaryToHexadecimal(int binaryNumber) {
+        return Integer.toHexString(binaryNumber);
     }
 
     /**
