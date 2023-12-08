@@ -85,8 +85,15 @@ public class FileParser {
                                         }else if(Mnem.equals("LSL") || Mnem.equals("LSR")){
                                             System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", #" + shamt);
                                         }else{
-                                            System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", X" + Rm);
+                                            //replace X31 with XZR
+                                            if(Rm == 31){
+                                                String XZR = "XZR";
+                                                System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", " + XZR);
+                                            }else {
+                                                System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", X" + Rm);
+                                            }
                                         }
+
                                         break;
 
                                     /*
@@ -113,12 +120,26 @@ public class FileParser {
                                         RdArrI = remainingIntsI.subList(17,22);
                                         int RdI = binaryToDecimal(combineElements(RdArrI));
 
+                                        //replace X28 with SP
+                                        if(RnI == 28 && RdI == 28){
+                                            String SP = "SP";
+                                            System.out.println(Mnem + " " + SP + ", " + SP  + ", #" + Alu);
+                                        } else if(RdI == 28){
+                                            String SP = "SP";
+                                            System.out.println(Mnem + " " + SP + ", X" + RnI  + ", #" + Alu);
+                                        }else if(RnI == 28){
+                                            String SP = "SP";
+                                            System.out.println(Mnem + " X" + RdI + ", " + SP  + ", #" + Alu);
+                                        } else {
+                                            System.out.println(Mnem + " X" + RdI + ", X" + RnI  + ", #" + Alu);
+                                        }
+
                                         //Switch case to print based on the instruction
                                         /**
                                          * All I type instructions (8)
                                          * ADDI, ADDIS, ANDI, ANDIS, EORI, ORRI, SUBIS, SUBI
                                          */
-                                        System.out.println(Mnem + " X" + RdI + ", X" + RnI  + ", #" + Alu);
+
 
                                         break;
 
@@ -140,7 +161,6 @@ public class FileParser {
                                          * All B type instructions for printing (2)
                                          * B, BL
                                          */
-
                                         System.out.println("BL " + BR_A);
                                         break;
 
@@ -244,7 +264,6 @@ public class FileParser {
                                             }
                                             System.out.println(Mnem + condString + " " + Cond);
 
-
                                             //if instruction is not B.cond
                                         } else {
                                             System.out.println(Mnem + " X" + Rt_CB + ", " + Cond);
@@ -320,5 +339,3 @@ public class FileParser {
     }
 
 }
-
-
