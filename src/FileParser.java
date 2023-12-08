@@ -75,7 +75,7 @@ public class FileParser {
                                          * FADDD, FADDS, EOR, DUMP, BR, ANDS, AND, ADDS, ADD
                                          */
 
-                                        System.out.println(Mnem + " X" + Rd + " X" + Rn + " X" + Rm);
+                                        System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", X" + Rm);
                                         break;
 
                                     /*
@@ -107,7 +107,7 @@ public class FileParser {
                                          * All I type instructions (8)
                                          * ADDI, ADDIS, ANDI, ANDIS, EORI, ORRI, SUBIS, SUBI
                                          */
-                                        System.out.println(Mnem + " X" + RdI + " X" + RnI  + " #" + Alu);
+                                        System.out.println(Mnem + " X" + RdI + ", X" + RnI  + ", #" + Alu);
 
                                         break;
 
