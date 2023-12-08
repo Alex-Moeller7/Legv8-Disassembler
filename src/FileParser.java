@@ -78,8 +78,15 @@ public class FileParser {
                                          * LSR, LSL, HALT, FSUBS, FSUBD, FMULS, FMULD, FDIVS, FDIVD, FCMPS, FCMPD,
                                          * FADDD, FADDS, EOR, DUMP, BR, ANDS, AND, ADDS, ADD
                                          */
-
-                                        System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", X" + Rm);
+                                        if(Mnem.equals("PRNT")){
+                                            System.out.println(Mnem + " X" + Rd);
+                                        }else if(Mnem.equals("PRNL") || Mnem.equals("DUMP") || Mnem.equals("HALT")){
+                                            System.out.println(Mnem);
+                                        }else if(Mnem.equals("LSL") || Mnem.equals("LSR")){
+                                            System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", #" + shamt);
+                                        }else{
+                                            System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", X" + Rm);
+                                        }
                                         break;
 
                                     /*
