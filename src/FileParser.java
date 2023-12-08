@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FileParser {
@@ -18,7 +17,12 @@ public class FileParser {
 
         try (InputStream is = new FileInputStream(fileLocation)) {
             int currentByte;
-            while ((currentByte = is.read()) != -1) {
+            while (true) {
+                currentByte = is.read();
+                if (currentByte == -1) {
+                    break; // Exit the loop when the end of the file is reached
+                }
+
                 for (int i = 7; i >= 0; i--) {
                     int bit = (currentByte >> i) & 1;
                     bitList.add(bit);
@@ -88,7 +92,7 @@ public class FileParser {
                                     case "I":
                                         int OPsizeI = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
                                         List<Integer> remainingIntsI = bitList.subList(OPsizeI, 32);
-                                        System.out.println(remainingIntsI);
+                                        //System.out.println(remainingIntsI);
                                         List<Integer> AluArr; //000000000001
                                         List<Integer> RnArrI; //00000
                                         List<Integer> RdArrI; //01001
@@ -143,7 +147,7 @@ public class FileParser {
                                     case "D":
                                         int OPsizeD = matchedInstruction.getOpcodeSize(); // number of bits for remaining fields
                                         List<Integer> remainingIntsD = bitList.subList(OPsizeD, 32);
-                                        System.out.println(remainingIntsD);
+                                        //System.out.println(remainingIntsD);
                                         List<Integer> DTArr; //000001000
                                         List<Integer> opArr; //00
                                         List<Integer> RnArrD; //11100
@@ -263,14 +267,8 @@ public class FileParser {
 
         return instructionList;
     }
-
-
     private static Instruction findMatchingInstruction(List<Integer> bitList) {
         return InstructionSet.findInstruction(bitList);
-    }
-
-    public static String binaryToHexadecimal(int binaryNumber) {
-        return Integer.toHexString(binaryNumber);
     }
 
     /**
@@ -313,4 +311,7 @@ public class FileParser {
 
         return decimal;
     }
+
 }
+
+
