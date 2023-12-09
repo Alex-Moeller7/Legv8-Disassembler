@@ -84,6 +84,8 @@ public class FileParser {
                                             System.out.println(Mnem);
                                         }else if(Mnem.equals("LSL") || Mnem.equals("LSR")){
                                             System.out.println(Mnem + " X" + Rd + ", X" + Rn + ", #" + shamt);
+                                        }else if(Mnem.equals("BR")){
+                                            System.out.println(Mnem + " X" + Rd);
                                         }else{
                                             //replace X31 with XZR
                                             if(Rm == 31){
@@ -154,14 +156,15 @@ public class FileParser {
                                         List<Integer> BR_Arr; //
 
                                         BR_Arr = remainingIntsB;
-                                        System.out.println(combineElements(BR_Arr));
+                                        //System.out.println(combineElements(BR_Arr));
                                         int BR_A = binaryToDecimal(combineElements(BR_Arr));
 
                                         /**
                                          * All B type instructions for printing (2)
                                          * B, BL
                                          */
-                                        System.out.println("BL " + BR_A);
+                                            System.out.println(Mnem + " test" + BR_A);
+                                            System.out.println("test" + BR_A + ":");
                                         break;
 
                                     /* EX: LDUR (D type)
@@ -200,7 +203,6 @@ public class FileParser {
                                          * LDUR, LDURB, LDURD, LDURH, LDURS, LDURSW,
                                          * STUR, STRUB, STRUD, STRUH, STRUS, STURSW
                                          */
-
                                         System.out.println(Mnem + " X" + RdD + ", [X" + RnD + ", #" + dt + "]");
                                         break;
 
@@ -222,7 +224,6 @@ public class FileParser {
                                         int Cond = binaryToDecimal(combineElements(COND_Arr));
 
                                         Rt_Arr = remainingInts_CB.subList(19,24);
-                                        //System.out.println(combineElements(Rt_Arr));
                                         int Rt_CB = binaryToDecimal(combineElements(Rt_Arr));
 
                                         /**
@@ -234,39 +235,53 @@ public class FileParser {
                                             switch(Rt_CB){
                                                 case 0:
                                                     condString = "EQ";
+                                                    break;
                                                 case 1:
                                                     condString = "NE";
+                                                    break;
                                                 case 2:
                                                     condString = "HS";
+                                                    break;
                                                 case 3:
                                                     condString = "LO";
+                                                    break;
                                                 case 4:
                                                     condString = "MI";
+                                                    break;
                                                 case 5:
                                                     condString = "PL";
+                                                    break;
                                                 case 6:
                                                     condString = "VS";
+                                                    break;
                                                 case 7:
                                                     condString = "VC";
+                                                    break;
                                                 case 8:
                                                     condString = "HI";
+                                                    break;
                                                 case 9:
                                                     condString = "LS";
+                                                    break;
                                                 case 10:
                                                     condString = "GE";
+                                                    break;
                                                 case 11:
                                                     condString = "LT";
+                                                    break;
                                                 case 12:
                                                     condString = "GT";
+                                                    break;
                                                 case 13:
                                                     condString = "LE";
+                                                    break;
                                                 default:
                                             }
-                                            System.out.println(Mnem + condString + " " + Cond);
+                                            System.out.println(Mnem + condString + " Label" + Cond);
 
                                             //if instruction is not B.cond
                                         } else {
-                                            System.out.println(Mnem + " X" + Rt_CB + ", " + Cond);
+                                            System.out.println(Mnem + " X" + Rt_CB + ", test" + Cond);
                                         }
 
                                         break;
